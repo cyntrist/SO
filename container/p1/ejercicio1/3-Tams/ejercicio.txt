@@ -1,0 +1,17 @@
+Compila y ejecuta el código de cada uno de los ejemplos proporcionados y responde a las preguntas proporcionadas para ellos.
+
+    main1.c
+        ¿Por qué el primer printf() imprime valores distintos para ‘a’ con los modificadores %d y %c?
+	>> Porque con %d está interpretando el número como un int y con %c como el código de un caracter ASCII
+
+        ¿Cuánto ocupa un tipo de datos char?
+        ¿Por qué el valor de ‘a’ cambia tanto al incrementarlo en 6? (la respuesta está relacionada con la cuestión anterior)
+        Si un “long” y un “double” ocupan lo mismo, ¿por qué hay 2 tipos de datos diferentes?
+    main2.c
+        ¿Tenemos un problema de compilación o de ejecución?
+        ¿Por qué se da el problema?. Soluciónalo, compila y ejecuta de nuevo.
+        ¿Qué significa el modificar "%lu" en printf()?
+        ¿A qué dirección apunta "pc"? ¿Coincide con la de alguna variable anteriormente declarada? Si es así, ¿Coinciden los tamaños de ambas?
+        ¿Coincide el valor del tamaño de array1 con el número de elementos del array? ¿Por qué?
+        ¿Coinciden las direcciones a la que apunta str1 con la de str2?
+        ¿Por qué los tamaños (según sizeof()) de str1 y str2 son diferentes?

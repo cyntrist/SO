@@ -17,4 +17,3 @@ Ejecuta la orden make clean. ¿Qué ha sucedido? Observa que el objetivo clean e
 Comenta la línea LIBS = -lm poniendo delante una almoadilla (#). Vuelve a contruir el proyecto ejecutando make (haz un clean antes si es necesario). ¿Qué sucede? ¿Qué etapa es la que da problemas?
 
 >> Los archivos hacen referencia a sin y cos, que son funciones definidas en la librería que acabamos de dejar de importar, por lo que dejan de estar definidas y no se puede construir el programa
-
