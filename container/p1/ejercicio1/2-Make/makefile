@@ -1,6 +1,6 @@
 CC = gcc
 CFLAGS = -Wall -g
-LIBS = -lm
+#LIBS = -lm
 
 %.o: %.c
 	$(CC) $(CFLAGS) -c -o $@ $<
