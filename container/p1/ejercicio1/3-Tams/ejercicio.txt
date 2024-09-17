@@ -32,9 +32,11 @@ Compila y ejecuta el código de cada uno de los ejemplos proporcionados y respon
 	>> PC está en 0x555555558068 y apunta a 0x555555558062, que es la posición de la variable 'x', sin embargo PC ocupa 8 bytes y 'x' ocupa 1.
 
         ¿Coincide el valor del tamaño de array1 con el número de elementos del array? ¿Por qué?
-
+	>> Como son 10 ints por 4 bytes que ocupan cada uno, el array ocupa 40 bytes. Ambos arrays ocupan lo mismo.
 
         ¿Coinciden las direcciones a la que apunta str1 con la de str2?
-
+	>> No, son dos tipos de variables distintas aunque contengan los mismos caracteres
 
         ¿Por qué los tamaños (según sizeof()) de str1 y str2 son diferentes?
+        >> Porque *void, el tamaño de un puntero, es 8 bytes y 21 bytes es el tamaño total de los 21 caracteres del array de str2.
+        >> Aquí entra en juego el tema de la degradación y diferencia entre un array y un puntero.

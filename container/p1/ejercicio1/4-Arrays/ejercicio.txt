@@ -1,0 +1,28 @@
+Compila y ejecuta el código de los ejemplos proporcionados y responde a las preguntas propuestas para cada uno de ellos.
+
+    array1.c
+        ¿Por qué no es necesario escribir "&list" para obtener la dirección del array list?
+        >> Porque apunta al primero directamente. (?)
+        
+        ¿Qué hay almacenado en la dirección de list?
+        >> El primer elemento del array.
+        
+        ¿Por qué es necesario pasar como argumento el tamaño del array en la función init_array?
+        >> Porque se inicializa de manera "manual" como quien dice, ciclas la longitud del array y lo rellenas, por tanto necesitas saber lo que mide.
+        
+        ¿Por qué el tamaño devuelto por sizeof() para el array de la función init_array no coincide con el declarado en main()?
+        
+        
+        ¿Por qué NO es necesario pasar como argumento el tamaño del array en la función init_array2?
+        
+        
+        ¿Coincide el tamaño devuelto por sizeof() para el array de la función init_array2 con el declarado en main()?
+
+
+
+    array2.c
+
+        ¿La copia del array se realiza correctamente? ¿Por qué?
+
+        Si no es correcto, escribe un código que sí realice la copia correctamente.
+

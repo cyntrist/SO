@@ -1,6 +1,5 @@
 #include <stdio.h>
 
-
 #define ARRAY_SIZE  10
 
 int a = 7;
@@ -24,11 +23,13 @@ int main()
 	printf("Address of x: %p Size: %lu \n",&x,sizeof(x));
 	printf("Address of pc: %p Address pointed by pc: %p Size: %lu \n",
 			&pc, pc, sizeof(pc));
-	printf("Address of array: %p Addres of elemnt 0: %p Size of the array: %lu \n",
+	printf("Address of array1: %p Address of elemnt 0: %p Size of the array: %lu \n",
 			array1, &array1[0], sizeof(array1));
-	printf("Address of str1: %p Address pointed by it: %p Size: %lu \n",
-			&str1, str1, sizeof(str1));
-	printf("Address of str2: %p Address pointed by it: %p Size: %lu \n",
-			&str2, str2, sizeof(str2));
+	printf("Address of array2: %p Address of elemnt 0: %p Size of the array: %lu \n",
+			array2, &array2[0], sizeof(array2));
+	printf("Address of str1: %p Address pointed by it: %p Size: %lu Size: %lu \n",
+			&str1, str1, sizeof(str1), sizeof(&str1));
+	printf("Address of str2: %p Address pointed by it: %p Size: %lu Size: %lu \n",
+			&str2, str2, sizeof(str2), sizeof(&str2));
     return 0;
 }
