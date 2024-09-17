@@ -24,12 +24,13 @@ Compila y ejecuta el código de cada uno de los ejemplos proporcionados y respon
 
 	 ¿Por qué se da el problema?. Soluciónalo, compila y ejecuta de nuevo.
 	>> El problema viene generado de declarar un array en función de una variable, tiene que ser declarado en función de algo constante en tiempo de compilación, como el macro ARRAY_SIZE.
+	>> Al recompilar el problema no persiste.
 
         ¿Qué significa el modificar "%lu" en printf()?
-	>> long long unsigned int
+	>> Long unsinged int.
 
         ¿A qué dirección apunta "pc"? ¿Coincide con la de alguna variable anteriormente declarada? Si es así, ¿Coinciden los tamaños de ambas?
-	>> PC está en 0x555555558068 y apunta a 0x555555558062, que es la posición de la variable 'x', sin embargo PC ocupa 8 bytes y 'x' ocupa 1.
+	>> 
 
         ¿Coincide el valor del tamaño de array1 con el número de elementos del array? ¿Por qué?
 
