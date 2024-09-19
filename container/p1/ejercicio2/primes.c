@@ -62,7 +62,10 @@ void compute_primes(int* result, int n) {
 
 int is_prime(int x) {
   if(x % 2 == 0) {
-    return 0;
+    if (x != 2) {
+      return 0;
+    }
+    return 1;
   }
   for(int i=3; i<x; i+=2) {
     if(x % i == 0) {
