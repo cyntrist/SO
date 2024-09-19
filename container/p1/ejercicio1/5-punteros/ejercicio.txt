@@ -3,6 +3,10 @@
         ¿Qué operador utilizamos para obtener la dirección de una variable? &
         ¿Qué operador se utiliza para acceder al contenido de la dirección “a la que apunta” un puntero? *
         Hay un error en el código. ¿Se produce en compilación o en ejecución? ¿Por qué se produce? 
+        Ejecución. Tras cambiar la posición del puntero en memoria, intenta cambiar el contenido de lo que está apuntando 
+        en esa dirección por 13, y falla porque no le corresponde esa memoria al programa muy probablemente ya que las direcciones de memoria
+        asignadas a un programa son aleatorias en ejecución, por lo que asignar direcciones arbitrarias suele acabar en error.
+    
     punteros2.c
         ¿Cuántos bytes se reservan en memoria con la llamada a malloc()?
         ¿Cuál es la dirección del primer y último byte de dicha zona reservada?
