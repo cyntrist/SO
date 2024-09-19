@@ -8,7 +8,7 @@ Compila y ejecuta el código de los ejemplos proporcionados y responde a las pre
         >> El primer elemento del array.
         
         ¿Por qué es necesario pasar como argumento el tamaño del array en la función init_array?
-        >> Porque se inicializa de manera "manual" al ser un "puntero"/, ciclas la longitud del array y lo rellenas, por tanto necesitas saber lo que mide.
+        
         
         ¿Por qué el tamaño devuelto por sizeof() para el array de la función init_array no coincide con el declarado en main()?
         
