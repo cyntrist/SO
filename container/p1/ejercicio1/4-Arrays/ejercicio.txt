@@ -2,27 +2,54 @@ Compila y ejecuta el código de los ejemplos proporcionados y responde a las pre
 
     array1.c
         ¿Por qué no es necesario escribir "&list" para obtener la dirección del array list?
-        >> Porque apunta al primero directamente. (?)
+        Porque al ser usado como argumento en la función sizeof(), se degrada y es pasado como puntero, por tanto ya es una referencia.
         
         ¿Qué hay almacenado en la dirección de list?
-        >> El primer elemento del array.
+        El primer elemento del array.
         
         ¿Por qué es necesario pasar como argumento el tamaño del array en la función init_array?
-        
+        Porque si no se desconoce su tamaño y no se puede inicializar, los arrays en funciones son pasados como punteros.
         
         ¿Por qué el tamaño devuelto por sizeof() para el array de la función init_array no coincide con el declarado en main()?
-        
+        Porque uno está inicializado y no está degradado y el otro no está inicializado pero sí degradado.
         
         ¿Por qué NO es necesario pasar como argumento el tamaño del array en la función init_array2?
-        
+        Porque depende de la macro N definida en tiempo de compilación.
         
         ¿Coincide el tamaño devuelto por sizeof() para el array de la función init_array2 con el declarado en main()?
+	No, por la misma razón que el del init_array(),
 
+	De hecho, al compilar aparecen estos mensajes:
+	
+	array1.c: In function ‘init_array’:
+array1.c:29:77: warning: ‘sizeof’ on array function parameter ‘array’ will return size of ‘int *’ [-Wsizeof-array-argument]
+   29 | ("Address of the array: %p Sizeof array %lu \n", array, sizeof(array));
+      |                                                               ^
 
+array1.c:26:21: note: declared here
+   26 | void init_array(int array[], int size)
+      |                 ~~~~^~~~~~~
+array1.c: In function ‘init_array2’:
+array1.c:38:77: warning: ‘sizeof’ on array function parameter ‘array’ will return size of ‘int *’ [-Wsizeof-array-argument]
+   38 | ("Address of the array: %p Sizeof array %lu \n", array, sizeof(array));
+      |                                                               ^
 
+array1.c:35:22: note: declared here
+   35 | void init_array2(int array[N])
+   
+   
+   
     array2.c
 
         ¿La copia del array se realiza correctamente? ¿Por qué?
+	No, por la degradación de los arrays y que los está tratando como punteros que apuntan al primer elemento del array. Al hacer dst = src; en la función copyArray, solo estás copiando el puntero y no los elementos del array en sí.
+	
 
         Si no es correcto, escribe un código que sí realice la copia correctamente.
-
+void copyArray(int src[],int dst[],int size)
+{
+ 	// dst = src;
+ 	int i;
+	for (i=0;i<size;i++)
+		dst[i] = src[i];
+}

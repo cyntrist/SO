@@ -1,0 +1,17 @@
+    punteros1.c
+        ¿Qué operador utilizamos para declarar una variable como un puntero a otro tipo? *
+        ¿Qué operador utilizamos para obtener la dirección de una variable? &
+        ¿Qué operador se utiliza para acceder al contenido de la dirección “a la que apunta” un puntero? *
+        Hay un error en el código. ¿Se produce en compilación o en ejecución? ¿Por qué se produce? 
+    punteros2.c
+        ¿Cuántos bytes se reservan en memoria con la llamada a malloc()?
+        ¿Cuál es la dirección del primer y último byte de dicha zona reservada?
+        ¿Por qué el contenido de la dirección apuntada por ptr es 7 y no 5 en el primer printf()?
+        ¿Por qué se modfica el contenido de ptr[1] tras la sentencia *ptr2=15;?
+        Indica dos modos diferentes de escribir el valor 13 en la dirección correspondiente a ptr[100].
+        Hay un error en el código. ¿Se manifiesta en compilación o en ejecución? Aunque no se manifieste, el error está. ¿Cuál es?
+    punteros3.c
+        ¿Por qué cambia el valor de ptr[13] tras la asignación ptr = &c;?
+        El código tiene (al menos) un error. ¿Se manifiesta en compilación o en ejecución? ¿Por qué?
+        ¿Qué ocurre con la zona reservada por malloc() tras a asignación ptr = &c;? ¿Cómo se puede acceder a ella? ¿Cómo se puede liberar dicha zona?
+
