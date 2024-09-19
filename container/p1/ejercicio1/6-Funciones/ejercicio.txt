@@ -1,0 +1,101 @@
+
+    arg1.c
+        ¿Por qué el valor de xc no se modifica tras la llamada a sumC? ¿Dónde se modifca esa información?
+        Porque se están pasando los argumentos por copia. 
+        Se modifica en el contexto de la función pero no fuera de ella.
+
+        Comenta las dos declaraciones adelantadas de sum() y sumC(). Compila de nuevo, ¿Qué ocurre?
+
+arg1.c:20:7: warning: implicit declaration of function ‘sumC’ [-Wimplicit-function-declaration]
+   20 |  zc = sumC(xc, yc);
+      |       ^~~~
+arg1.c:20:7: error: incompatible types when assigning to type ‘struct _complex_’ from type ‘int’
+arg1.c:22:14: warning: implicit declaration of function ‘sum’ [-Wimplicit-function-declaration]
+   22 |  int total = sum(x, y);
+      |              ^~~
+arg1.c: At top level:
+arg1.c:40:19: error: conflicting types for ‘sumC’
+   40 | struct _complex_  sumC( struct _complex_ a,  struct _complex_ b)
+      |                   ^~~~
+arg1.c:20:7: note: previous implicit declaration of ‘sumC’ was here
+   20 |  zc = sumC(xc, yc);
+      |       ^~~~
+
+        Main ya no sabe a qué se refiere con las llamadas a estas funciones aunque existan después 
+        y tiene problemas con los tipos de datos.
+
+
+    arg2.c
+        ¿Por qué cambia el valor de y tras la llamada a sum()?
+        Porque sum se está llamando con ptr que está apuntando a y, y en la llamada se modifica lo que vale
+        el contenido del segundo argumento de la función, en este caso ptr y por tanto y.
+
+        ¿Por qué en ocasiones se usa el operador ‘.’ y en otras ‘->’ para acceder a los campos de una estructura?
+        . es para acceder a campos de structs y -> para punteros a structs, aunque realmente 
+        pos->x 
+        es lo mismo que
+        (*pos).x
+        
+        ¿Por qué el valor de zc pasa a ser incorrecto sin volver a usarlo en el código?
+        Porque devuelve una dirección de memoria local en la función, que solo existe en ese contexto
+        y cuando acabe la función será memoria liberada que no tiene por qué contener el resultado.
+
+arg2.c:54:9: warning: function returns address of local variable [-Wreturn-local-addr]
+   54 |  return &r;
+      |  
+        
+        Corrije el código para evitar el error producido en zc
+
+#include <stdio.h>
+
+/* Structured data type */
+struct _complex_ {
+	float re;
+	float im;
+};
+
+/* Forward declaration */
+int sum(int *pa, int *pb);
+void * sumC( struct _complex_ *c, struct _complex_ *a,  struct _complex_ *b);
+
+int main(void)
+{
+	int x = 4, y = 5;
+	int* ptr = &y;
+	struct _complex_ xc = {.re = 1.0, .im = 2.0};
+	struct _complex_ yc = {.re = 3.0, .im = 1.0};
+	struct _complex_ *zc;
+
+
+	printf("Complex numbers addition. (%f,%f i) + (%f,%f i) = ",
+			xc.re, xc.im, yc.re, yc.im);
+
+	sumC(zc, &xc, &yc);
+	printf("(%f,%f i)\n", zc->re, zc->im);
+
+	int total = sum(&x,ptr);
+	printf("Integer addition:  x +y = %d + %d = %d \n", x, y, total);
+	printf("xc = (%f,%f i)  yc = (%f,%f i) zc = (%f,%f i)\n",
+			xc.re, xc.im, yc.re, yc.im, zc->re, zc->im);
+	return 0;
+}
+
+int sum(int *pa, int *pb)
+{
+	/* args passed by reference */
+	int c = *pa + *pb;
+
+	*pa = 7;
+	*pb = 8;
+	return c;  /* return by value */
+}
+
+void * sumC(struct _complex_ *r, struct _complex_* a,  struct _complex_* b)
+{
+	r->re = a->re + b->re;
+	r->im = a->im + b->im;
+
+	// We modify the first argument
+	a->re = 12.5;
+	a->im = 13.4;
+}

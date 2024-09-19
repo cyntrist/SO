@@ -1,21 +1,63 @@
     punteros1.c
-        ¿Qué operador utilizamos para declarar una variable como un puntero a otro tipo? *
-        ¿Qué operador utilizamos para obtener la dirección de una variable? &
-        ¿Qué operador se utiliza para acceder al contenido de la dirección “a la que apunta” un puntero? *
+        ¿Qué operador utilizamos para declarar una variable como un puntero a otro tipo? 
+        *
+
+        ¿Qué operador utilizamos para obtener la dirección de una variable? 
+        &
+
+        ¿Qué operador se utiliza para acceder al contenido de la dirección “a la que apunta” un puntero? 
+        *
+
         Hay un error en el código. ¿Se produce en compilación o en ejecución? ¿Por qué se produce? 
         Ejecución. Tras cambiar la posición del puntero en memoria, intenta cambiar el contenido de lo que está apuntando 
         en esa dirección por 13, y falla porque no le corresponde esa memoria al programa muy probablemente ya que las direcciones de memoria
         asignadas a un programa son aleatorias en ejecución, por lo que asignar direcciones arbitrarias suele acabar en error.
     
+
     punteros2.c
         ¿Cuántos bytes se reservan en memoria con la llamada a malloc()?
+        127*4=508. 508 a hexadecimal es 1FC.
+
         ¿Cuál es la dirección del primer y último byte de dicha zona reservada?
+        0x5555555592a0 es el principio, + 1FC por tanto el final será 0x55555555949C. 
+
         ¿Por qué el contenido de la dirección apuntada por ptr es 7 y no 5 en el primer printf()?
+        Por la sentencia que cambia el primer elemento de ptr: ptr[0] = 7.
+
         ¿Por qué se modfica el contenido de ptr[1] tras la sentencia *ptr2=15;?
+        Por la sentencia ptr2++;. ptr2 estaba apuntando a ptr, aka ptr[0]. Al avanzar con ptr2++, apunta a 
+        ptr[1] y por eso *ptr2=15 cambia su valor.
+
         Indica dos modos diferentes de escribir el valor 13 en la dirección correspondiente a ptr[100].
+        *ptr[100] = 13;
+        *(ptr + 100) = 13;
+
         Hay un error en el código. ¿Se manifiesta en compilación o en ejecución? Aunque no se manifieste, el error está. ¿Cuál es?
+        No se manifiesta ni en compilación ni en ejecución. Después de liberar la memoria de ptr, se cambia el valor 
+        de su referencia, lo cual devuelve esa memoria fuera del programa, haciendo que el puntero se quede colgando
+        y sentencias con él pueden desencadenar un comportamiento imprevisto. Lo ideal sería igualar el puntero a NULL
+        tras liberarlo.
+    
     punteros3.c
         ¿Por qué cambia el valor de ptr[13] tras la asignación ptr = &c;?
+
+
         El código tiene (al menos) un error. ¿Se manifiesta en compilación o en ejecución? ¿Por qué?
+        En ejecución:
+
+ptr[0]= 0 ptr[13]=13 
+ptr[0]= 37 ptr[13]=0 
+free(): invalid pointer
+
+Program received signal SIGABRT, Aborted.
+__GI_raise (sig=sig@entry=6) at ../sysdeps/unix/sysv/linux/raise.c:50
+50      ../sysdeps/unix/sysv/linux/raise.c: No existe el fichero o el directorio.
+
+        El problema viene dado de cambiar la referencia de ptr a c, que existe fuera del main,
+        sin no solo no hacer free antes provocando una fuga de memoria 
+        sino hacerlo después, apuntando a un lugar de memoria distinto.
+
         ¿Qué ocurre con la zona reservada por malloc() tras a asignación ptr = &c;? ¿Cómo se puede acceder a ella? ¿Cómo se puede liberar dicha zona?
+        Es una fuga de memoria, se pierde la referencia a esa zona y no hay manera de volver a acceder a ella.
+        Para liberarla hay que hacerlo antes de reasignar el puntero.
 

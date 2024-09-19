@@ -25,8 +25,8 @@ int main()
 	char* str2 = "other";
 	char str3[32];
 
-	copy(str1, str2);
-	//copy2(str1, &str2);
+	//copy(str1, str2);
+	copy2(str1, &str2);
 	printf("str1 %s str2 %s\n", str1, str2);
 
 	mod(str1, str3);

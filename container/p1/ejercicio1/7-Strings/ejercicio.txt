@@ -1,0 +1,43 @@
+
+    strings1.c
+        El código contiene un error. ¿Se manifiesta en compilación o en ejecución? ¿Por qué se produce? 
+        Soluciona el error comentando la(s) línea(s) afectadas. Vuelve a compilar y ejecutar.
+        
+        Se reasignan las dos primeras posiciones de msg pero no se indica el caracter de fin \0.
+
+        ¿En qué dirección está la letra 'B' de la cadena "Bonjour"? ¿Y la de la la letra 'j'?
+
+        0x555555556008, porque es la primera. La j estará 3 posiciones después, por tanto: 0x55555555600A.
+
+        Tras la asignación p=msg2;, ¿cómo podemos recuperar la dirección de la cadena "Bonjour"?
+        No se puede, queda perdida.
+
+        ¿Por qué la longitud de las cadenas p y msg2 es 2 tras la línea 30? 
+        Se asignan 3 bytes a 'p' que modifican a ambos, pero luego la longitud es sólo 2.
+        
+        ???, no hay línea 30... en cualquier caso es por el caracter '\0' que indica el final del string.
+        
+        ¿Por qué strlen() devuelve un valor diferente a sizeof()?
+        Porque strlen() devuelve la longitud del valor de la variable interpretada como una sucesión de chars.
+        Sizeof() devuelve el tamaño de la variable total, interpretando su tipo.
+
+    strings2.c
+        El código de copy no funciona. ¿Por qué?
+
+        Los argumentos se pasan por valor, incluso los punteros. Esto significa que se está modificando 
+        una copia local del puntero en el contexto de la funcion y no el puntero original en main.
+
+        Usa ahora la función copy2() (descomenta la línea correspondiente). ¿Funciona la copia?
+
+        Sí funciona por lo anterior, se está pasando una referencia al puntero, con lo que se modifica correctamente.
+
+        Propón una implementación correcta de la copia.
+
+        ?? si ya funciona
+
+        ¿Qué hace la función mod()? ¿Por qué funciona?
+
+        Convierte a mayúsculas el string de su argumento, presupuesto en minúsculas.
+        Funciona porque le resta 32 a cada caracter, que es la diferencia en el código ASCII 
+        entre las letras minúsculas y su mayúscula.
+

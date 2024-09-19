@@ -22,5 +22,6 @@ int main()
 
 	msg[0] = 'B', msg[1] = 'y';
 	printf("msg: %s, p: %s, msg2: %s\n", msg, p, msg2);
+	printf("dir de msg: %p, dir de p: %p, dir de msg2: %p\n", msg, p, msg2);
 }
 

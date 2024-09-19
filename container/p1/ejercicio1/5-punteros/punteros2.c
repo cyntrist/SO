@@ -5,7 +5,7 @@ int nelem;
 
 int main(void)
 {
-	int *ptr;
+	int * ptr;
 	int * ptr2;
 
 	nelem = 127;
