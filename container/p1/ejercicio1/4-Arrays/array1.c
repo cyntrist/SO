@@ -8,7 +8,8 @@ void init_array2(int array[N]);
 int main(void)
 {
 	int i,list[N];
-	printf("Address of list %p Address of list[0]: %p Address of list[1]: %p. Sizeof list %lu \n",
+	printf("\n-------------------------\n");
+	printf("Address of list %p\nAddress of list[0]: %p\nAddress of list[1]: %p.\nSizeof list %lu \n",
 			list, &list[0], &list[1], sizeof(list));
 
 	init_array(list, N);
