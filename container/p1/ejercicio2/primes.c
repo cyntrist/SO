@@ -42,7 +42,7 @@ int sum(int *arr, int n) {
   int i;
   int total;
   for(i=0; i<n; i++) {
-    total =+ arr[i];
+    total += arr[i];
   }
   return total;
 }
@@ -50,25 +50,27 @@ int sum(int *arr, int n) {
 void compute_primes(int* result, int n) {
   int i = 0;
   int x = 2;
+  result[i] = x;
+  x++;
+  i++;
   while(i < n) {
     if(is_prime(x)) {
+      printf("PRIME: %d\n", x);
       result[i] = x;
       i++;
-      x += 2;
     }
+    x++;
   }
   return;
 }
 
 int is_prime(int x) {
-  if(x % 2 == 0) {
-    if (x != 2) {
-      return 0;
-    }
-    return 1;
-  }
-  for(int i=3; i<x; i+=2) {
-    if(x % i == 0) {
+  if (x == 0 || x == 1)
+    return 0;
+    
+  int i;
+  for (i = 2; i <= x / 2; ++i) {
+    if (x % i == 0) {
       return 0;
     }
   }
