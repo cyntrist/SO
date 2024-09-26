@@ -23,26 +23,31 @@ void compute_primes(int* result, int n);
 int is_prime(int x);
 
 int main(int argc, char **argv) {
-
+  printf("ARGC %d\n", argc);
   int n = 10; // by default the first 10 primes
   if(argc = 2) {
-    atoi(argv[2]);
+    n = atoi(argv[1]);
   }
   int* primes = (int*)malloc(n*sizeof(int));
   compute_primes(primes, n);
-
+  
+  //int s = 0;
   int s = sum(primes, n);
   printf("The sum of the first %d primes is %d\n", n, s);
 
   free(primes);
+  primes = NULL;
+  
   return 0;
 }
 
 int sum(int *arr, int n) {
   int i;
-  int total;
+  int total = 0;
+  printf("TOTAL BEFORE: %d\n", total);
   for(i=0; i<n; i++) {
     total += arr[i];
+    printf("TOTAL STEP: %d\n", total);
   }
   return total;
 }
@@ -50,9 +55,6 @@ int sum(int *arr, int n) {
 void compute_primes(int* result, int n) {
   int i = 0;
   int x = 2;
-  result[i] = x;
-  x++;
-  i++;
   while(i < n) {
     if(is_prime(x)) {
       printf("PRIME: %d\n", x);
@@ -67,7 +69,8 @@ void compute_primes(int* result, int n) {
 int is_prime(int x) {
   if (x == 0 || x == 1)
     return 0;
-    
+  if (x == 2)
+    return 1;
   int i;
   for (i = 2; i <= x / 2; ++i) {
     if (x % i == 0) {
