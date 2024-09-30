@@ -29,7 +29,7 @@ void usage() {
 void display_numbers ( int lenght, parity_t type, char * title) {
 	
 	int i,n;
-	int first = (type == ODD )? 1 : 2;
+	int first = (type == ODD ) ? 1 : 2;
 	
 	printf("Title: %s\n",title);
 	for (i=0,n=first; i<lenght; i++,n+=2) {
@@ -41,7 +41,13 @@ void display_numbers ( int lenght, parity_t type, char * title) {
 
 
 int main(int argc, char *argv[])
-{
+{	
+	int i = 0;
+	for (i = 0; i < 2; i++){
+		printf("Argument %d %s\n", i, argv[i]);
+	}
+	printf("Optind %d\n", optind);
+
 	int  opt;
 	struct options options;
 
@@ -50,14 +56,21 @@ int main(int argc, char *argv[])
 	/* Initialize default values for options */
 	options.par_mode = ODD;
 	options.lenght= 10;
-	options.title = NULL;
+	options.title = "title";
 
 	/* Parse command-line options */
-	while((opt = getopt(argc, argv, "h")) != -1) {
+	while((opt = getopt(argc, argv, "hle")) != -1) {
 		switch(opt) {
 		case 'h':
 			usage();
 			exit(0);
+			break;
+		case 'l':
+			options.lenght=atoi(argv[2]);
+			break;
+		case 'e':
+			options.par_mode=EVEN;
+			break;
 		default:
 			exit(EXIT_FAILURE);
 		}
@@ -71,7 +84,7 @@ int main(int argc, char *argv[])
 	}
 	
 	/* Fill options.title with the corresponding element of argv */
-	// options.title = argv[xxxx];
+	options.title = argv[argc-1];
 
     /* Call display_numbers */
 	display_numbers (options.lenght, options.par_mode, options.title);
