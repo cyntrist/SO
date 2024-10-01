@@ -79,6 +79,7 @@ passwd_entry_t* parse_passwd(struct options* options, int* nr_entries)
 		cur_entry=&entries[entry_idx];
 
 		while((token = strsep(&lineptr, ":"))!=NULL) {
+		        printf("%c", line[0]);
 			switch(token_id) {
 			case LOGIN_NAME_IDX:
 				strcpy(cur_entry->login_name,token);
@@ -115,6 +116,7 @@ passwd_entry_t* parse_passwd(struct options* options, int* nr_entries)
 			}
 			token_id++;
 		}
+		printf("\n");
 		if (token_id!=NR_FIELDS_PASSWD) {
 			fprintf(stderr, "Could not process all tokens from line %d of /etc/passwd\n",entry_idx+1);
 			return NULL;

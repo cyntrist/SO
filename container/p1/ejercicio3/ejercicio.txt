@@ -1,0 +1,5 @@
+    ¿Qué cadena de caracteres debes utilizar como tercer argumento de getopt()?
+	"hle", el conjunto de caracteres que queremos considerar para los argumentos del programa.
+
+    ¿Qué línea de código utilizas para leer el argumento title?
+	options.title = argv[argc-1];
