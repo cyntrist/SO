@@ -40,9 +40,9 @@ passwd_entry_t *parse_passwd(struct options *options, int *nr_entries)
 	int entry_count = 0;
 	int cur_line;
 
-	if ((passwd = fopen("/etc/passwd", "r")) == NULL)
+	if ((passwd = fopen(options->infile, "r")) == NULL)
 	{
-		fprintf(stderr, "/etc/passwd could not be opened: ");
+		fprintf(stderr, "%s could not be opened: ", options->infile);
 		perror(NULL);
 		return NULL;
 	}
@@ -200,6 +200,13 @@ static int show_passwd(struct options *options)
 					e->login_name, e->optional_encrypted_passwd,
 					e->uid, e->gid, e->user_name,
 					e->user_home, e->user_shell);
+			break;
+		case CSV_MODE:
+			fprintf(options->outfile, "%s,%s,%d,%d,%s,%s,%s,",
+					e->login_name, e->optional_encrypted_passwd,
+					e->uid, e->gid, e->user_name,
+					e->user_home, e->user_shell);
+			break;
 		}
 	}
 	free_entries(entries, nr_entries);
@@ -214,9 +221,10 @@ int main(int argc, char *argv[])
 	/* Initialize default values for options */
 	options.outfile = stdout;
 	options.output_mode = VERBOSE_MODE;
+	options.infile = "/etc/passwd";
 
 	/* Parse command-line options */
-	while ((opt = getopt(argc, argv, "hvpoic:")) != -1)
+	while ((opt = getopt(argc, argv, "hvpco:i:")) != -1)
 	{
 		switch (opt)
 		{
@@ -229,6 +237,9 @@ int main(int argc, char *argv[])
 		case 'p':
 			options.output_mode = PIPE_MODE;
 			break;
+		case 'c':
+			options.output_mode = CSV_MODE;
+			break;
 		case 'o':
 			if ((options.outfile = fopen(optarg, "wx")) == NULL)
 			{
@@ -239,15 +250,7 @@ int main(int argc, char *argv[])
 			}
 			break;
 		case 'i':
-			// if ((options.infile = fopen(optarg, "wx")) == NULL)
-			// {
-			// 	fprintf(stderr, "The output file %s could not be opened: ",
-			// 			optarg);
-			// 	perror(NULL);
-			// 	exit(EXIT_FAILURE);
-			// }
-			break;
-		case 'c':
+			options.infile = optarg;
 			break;
 		default:
 			exit(EXIT_FAILURE);
