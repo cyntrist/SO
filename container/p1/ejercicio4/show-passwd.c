@@ -216,12 +216,12 @@ int main(int argc, char *argv[])
 	options.output_mode = VERBOSE_MODE;
 
 	/* Parse command-line options */
-	while ((opt = getopt(argc, argv, "hvpoi:")) != -1)
+	while ((opt = getopt(argc, argv, "hvpoic:")) != -1)
 	{
 		switch (opt)
 		{
 		case 'h':
-			fprintf(stderr, "Usage: %s [ -h | -v | -p | -o <output_file> | -i <input_file> ]\n", argv[0]);
+			fprintf(stderr, "Usage: %s [ -h | -v | -p | -o <output_file> | -i <input_file> | -c]\n", argv[0]);
 			exit(0);
 		case 'v':
 			options.output_mode = VERBOSE_MODE;
@@ -239,6 +239,15 @@ int main(int argc, char *argv[])
 			}
 			break;
 		case 'i':
+			// if ((options.infile = fopen(optarg, "wx")) == NULL)
+			// {
+			// 	fprintf(stderr, "The output file %s could not be opened: ",
+			// 			optarg);
+			// 	perror(NULL);
+			// 	exit(EXIT_FAILURE);
+			// }
+			break;
+		case 'c':
 			break;
 		default:
 			exit(EXIT_FAILURE);
