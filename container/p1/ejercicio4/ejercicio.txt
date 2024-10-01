@@ -7,12 +7,14 @@ Se usa para hacer una copia dinámica alocandola en el heap de los strings, inde
 
     2. La función strsep(), utilizada en parse_passwd(), modifica la cadena que se desea dividir en tokens. ¿Qué tipo de modificaciones sufre la cadena (variable line) tras invocaciones sucesivas de strsep()? Pista: Consúltese el valor y las direcciones de las variables del programa usando el depurador.
 
-line va 'acortándose' saltando línea a línea por cada iteración fgets(line, MAX_PASSWD_LINE + 1, passwd) != NULL, por lo que line[0] cada vez será el primer caracter de la siguiente línea a leer.
+line va saltando línea a línea por cada iteración de fgets(line, MAX_PASSWD_LINE + 1, passwd) != NULL, por lo que line[0] cada vez será el primer caracter de la siguiente línea a leer.
 
 
 Realice las siguientes modificaciones en el programa show-passwd.c:
 
     3. Consulte la página de manual de la función strdup de la biblioteca estándar de C. Intenta utilizar esta función como reemplazo de clone_string().
+    
+    >> hay que hacer frees adicionales? creo que no 
 
     4. Añada la opción -i <inputfile> para especificar una ruta alternativa para el fichero passwd. Hacer una copia de /etc/passwd en otra ubicación para verificar el correcto funcionamiento de esta nueva opción.
 

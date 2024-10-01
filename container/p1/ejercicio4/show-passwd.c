@@ -79,13 +79,12 @@ passwd_entry_t* parse_passwd(struct options* options, int* nr_entries)
 		cur_entry=&entries[entry_idx];
 
 		while((token = strsep(&lineptr, ":"))!=NULL) {
-		        printf("%c", line[0]);
 			switch(token_id) {
 			case LOGIN_NAME_IDX:
 				strcpy(cur_entry->login_name,token);
 				break;
 			case ENCRYPTED_PASS_IDX:
-				cur_entry->optional_encrypted_passwd=clone_string(token);
+				cur_entry->optional_encrypted_passwd=strdup(token);
 				break;
 			case UID_IDX:
 				if (sscanf(token,"%d",&cur_entry->uid)!=1) {
@@ -101,22 +100,22 @@ passwd_entry_t* parse_passwd(struct options* options, int* nr_entries)
 				}
 				break;
 			case USER_NAME_IDX:
-				cur_entry->user_name=clone_string(token);
+				cur_entry->user_name=strdup(token);
 				break;
 			case USER_HOME_IDX:
-				cur_entry->user_home=clone_string(token);
+				cur_entry->user_home=strdup(token);
 				break;
 			case USER_SHELL_IDX:
 				/* remove new line from token */
 				token[strlen(token)-1]='\0';
-				cur_entry->user_shell=clone_string(token);
+				cur_entry->user_shell=strdup(token);
 				break;
 			default:
 				break;
 			}
 			token_id++;
 		}
-		printf("\n");
+
 		if (token_id!=NR_FIELDS_PASSWD) {
 			fprintf(stderr, "Could not process all tokens from line %d of /etc/passwd\n",entry_idx+1);
 			return NULL;
@@ -147,7 +146,12 @@ static void free_entries(passwd_entry_t* entries, int nr_entries)
 		free(entry->user_home);
 		free(entry->user_shell);
 	}
-
+        
+        //int j = 0;
+        //for (j = 0; j < nr_entries, j++) {
+          //free(3);
+        //}
+        
 	free(entries);
 }
 
@@ -202,10 +206,10 @@ int main(int argc, char *argv[])
 	options.output_mode=VERBOSE_MODE;
 
 	/* Parse command-line options */
-	while((opt = getopt(argc, argv, "hvpo:")) != -1) {
+	while((opt = getopt(argc, argv, "hvpoi:")) != -1) {
 		switch(opt) {
 		case 'h':
-			fprintf(stderr,"Usage: %s [ -h | -v | -p | -o <output_file> ]\n",argv[0]);
+			fprintf(stderr,"Usage: %s [ -h | -v | -p | -o <output_file> | -i <input_file> ]\n",argv[0]);
 			exit(0);
 		case 'v':
 			options.output_mode=VERBOSE_MODE;
