@@ -9,38 +9,20 @@ int main(int argc, char *argv[])
 {
 	FILE *file;
 
-	if (argc < 2)
+	if (argc < 3)
 	{
-		fprintf(stderr, "Usage: %s <file_name> <content> <content>\n", argv[0]);
+		fprintf(stderr, "Usage: %s <file_name> <content> ...\n", argv[0]);
 		exit(1);
 	}
 
-	if ((file = fopen(argv[1], "w")) == NULL)
+	if ((file = fopen(argv[1], "wb")) == NULL)
 		err(2, "The input file %s could not be opened", argv[1]);
 
-
-
-
-
-
-
-	while ((n = fread(&c, sizeof(c), 1, file)) == 1)
-	{
-		fwrite(&c, sizeof(c), 1, stdout);
-
-		if (n == 0)
-		{
-			fclose(file);
-			err(3, "fread() failed!!");
-		}
-	}
-	fwrite(&"\0", 1, 1, stdout);
-
-
-
-
-
+	int i;
+	for (i = 2; i < argc; i++) 
+		fwrite(argv[i],  strlen(argv[i]) + 1, 1, file);
 
 	fclose(file);
+	printf("Written to file: %s\n", argv[1]);
 	return 0;
 }
