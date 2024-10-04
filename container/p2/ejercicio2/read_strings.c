@@ -31,8 +31,7 @@ char *loadstr(FILE *file)
 		exit(EXIT_FAILURE);
 	}
 
-	size_t read = fread(string, 1, length + 1, file);
-	if (read != length + 1)
+	if ((fread(string, 1, length + 1, file)) != length + 1)
 		return NULL;
 
 	return string; // devuelve un puntero al string leido
@@ -73,12 +72,17 @@ int main(int argc, char *argv[])
 	// 	free(line);
 	// }
 
-	while (!feof(file))
+
+	// me he quedado sin ideas	
+	char* line = loadstr(file);
+	printf("%s\n", line);
+	free(line);
+	while (line != NULL)
 	{
-		char *line = loadstr(file);
+		line = loadstr(file);
 		printf("%s\n", line);
 		free(line);
-		if (feof(file))
+		if (line == NULL)
 			break;
 	}
 
