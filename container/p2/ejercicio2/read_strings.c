@@ -30,7 +30,9 @@ char *loadstr(FILE *file)
 		perror("Memory allocation error");
 		exit(EXIT_FAILURE);
 	}
-	fread(string, 1, length + 1, file); // leer el string una vez
+
+	if (fread(string, 1, length + 1, file) != length + 1) // leer el string una vez
+		return NULL;
 
 	return string; // devuelve un puntero al string leido
 }
@@ -48,13 +50,11 @@ int main(int argc, char *argv[])
 	if ((file = fopen(argv[1], "rb")) == NULL)
 		err(2, "The input file %s could not be opened", argv[1]);
 
-	while (!feof(file))
+	char *line;
+	while ((line = loadstr(file)) != NULL)
 	{
-		char *line = loadstr(file);
 		printf("%s\n", line);
 		free(line);
-		if (feof(file))
-			break;
 	}
 
 	fclose(file);
