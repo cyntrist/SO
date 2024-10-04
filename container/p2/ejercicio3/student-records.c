@@ -10,7 +10,7 @@
 
 int print_text_file(char *path)
 {
-	/* To be completed (part A) */
+	
 	return 0;
 }
 
