@@ -1,4 +1,5 @@
 #include <stdio.h>
+#include <string.h>
 
 #define N 10
 
@@ -16,9 +17,10 @@ void imprimeArray(int v[],int size)
 void copyArray(int src[],int dst[],int size)
 {
  	// dst = src;
- 	int i;
-	for (i=0;i<size;i++)
-		dst[i] = src[i];
+ 	//int i;
+	//for (i=0;i<size;i++)
+		//dst[i] = src[i];
+	memcpy(dst, src, size * sizeof(src[0]));
 }
 
 
