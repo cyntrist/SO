@@ -19,7 +19,8 @@ char *loadstr(FILE *file)
 	long ini = ftell(file); // posicion inicial de contador del archivo
 
 	int length = 0;
-	while (fgetc(file) != '\0')
+	int c;
+	while ((c =fgetc(file)) != '\0' && c != EOF)
 		length++; // longitud de la palabra en caracteres aka bytes
 
 	fseek(file, ini, SEEK_SET); // vuelve al principio del archivo y limpia el EOF si procede
@@ -74,16 +75,11 @@ int main(int argc, char *argv[])
 
 
 	// me he quedado sin ideas	
-	char* line = loadstr(file);
-	printf("%s\n", line);
-	free(line);
-	while (line != NULL)
+	char * line;
+	while ((line = loadstr(file)) != NULL)
 	{
-		line = loadstr(file);
 		printf("%s\n", line);
 		free(line);
-		if (line == NULL)
-			break;
 	}
 
 
