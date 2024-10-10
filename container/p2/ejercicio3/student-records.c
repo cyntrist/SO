@@ -4,13 +4,110 @@
 #include <string.h>
 #include "defs.h"
 
-
 /* Assume lines in the text file are no larger than 100 chars */
 #define MAXLEN_LINE_FILE 100
 
 int print_text_file(char *path)
 {
-	
+	FILE *file = path;
+	char line[MAXLEN_LINE_FILE + 1];
+	student_t *entries;
+	student_t *cur_entry;
+	int line_count = 0;
+	char *token;
+	char *lineptr;
+	token_id_t token_id;
+	int entry_idx;
+	int entry_count = 0;
+	int cur_line;
+
+	if ((file = fopen(path, "r")) == NULL)
+	{
+		fprintf(stderr, "%s could not be opened: ", file);
+		perror(NULL);
+		return NULL;
+	}
+
+	// first char is no of lines
+	int n_lines = fgetc(file);
+
+	/* Figure out number of lines */
+	while (fgets(line, MAXLEN_LINE_FILE + 1, path) != NULL)
+	{
+		line_count++;
+		/* Discard lines that begin with # */
+		if (line[0] != '#')
+			entry_count++;
+	}
+
+	/* Rewind position indicator*/
+	fseek(file, 0, SEEK_SET);
+
+	entries = malloc(sizeof(student_t) * entry_count);
+	/* zero fill the array of structures */
+	memset(entries, 0, sizeof(student_t) * entry_count);
+
+	/* Parse file */
+	entry_idx = 0;
+	cur_line = 1;
+	while (fgets(line, MAX_PASSWD_LINE + 1, file) != NULL)
+	{
+
+		/* Discard lines that begin with # */
+		if (line[0] == '#')
+		{
+			cur_line++;
+			continue;
+		}
+
+		/* Point to the beginning of the line */
+		lineptr = line;
+		token_id = STUDENT_ID_IDX;
+		cur_entry = &entries[entry_idx];
+
+		while ((token = strsep(&lineptr, ":")) != NULL)
+		{
+			switch (token_id)
+			{
+			case STUDENT_ID_IDX:
+				strcpy(cur_entry->student_id, token);
+				break;
+			case NIF_IDX:
+				strcpy(cur_entry->NIF, token);
+				break;
+			case FIRST_NAME_IDX:
+				strcpy(cur_entry->first_name, token);
+				break;
+			case LAST_NAME_IDX:
+				strcpy(cur_entry->last_name, token);
+				break;
+			default:
+				break;
+			}
+			token_id++;
+		}
+
+		if (token_id != NR_FIELDS_STUDENT)
+		{
+			fprintf(stderr, "Could not process all tokens from line %d of /etc/passwd\n", entry_idx + 1);
+			return NULL;
+		}
+		cur_line++;
+		entry_idx++;
+	}
+	//(*nr_entries) = entry_count;
+
+	// printing
+	int i = 0;
+	for (int i = 0; i < n_lines; i++)
+	{
+		student_t *e = &entries[i]; /* Point to current entry */
+		fprintf(stdout, "[Entry #%d]\n", i);
+		fprintf(stdout, "\tID=%s\n\tNIF=%s\n\t"
+						"First Name=%d\n\tgid=%d\n\tLast Name=%s\n\t",
+				e->student_id, e->NIF, e->first_name, e->last_name);
+	}
+
 	return 0;
 }
 
@@ -19,7 +116,6 @@ int print_binary_file(char *path)
 	/* To be completed  (part B) */
 	return 0;
 }
-
 
 int write_binary_file(char *input_file, char *output_file)
 {
@@ -33,13 +129,13 @@ int main(int argc, char *argv[])
 	struct options options;
 
 	/* Initialize default values for options */
-	options.input_file = NULL;
-	options.output_file = NULL;
+	options.input_file = "students-db.txt";
+	options.output_file = stdout;
 	options.action = NONE_ACT;
 	ret_code = 0;
 
 	/* Parse command-line options (incomplete code!) */
-	while ((opt = getopt(argc, argv, "hi:")) != -1)
+	while ((opt = getopt(argc, argv, "hi:p")) != -1)
 	{
 		switch (opt)
 		{
@@ -49,10 +145,9 @@ int main(int argc, char *argv[])
 		case 'i':
 			options.input_file = optarg;
 			break;
-		
-		/**
-		 **  To be completed ...
-		 **/
+		case 'p':
+			options.action = PRINT_TEXT_ACT;
+			break;
 
 		default:
 			exit(EXIT_FAILURE);

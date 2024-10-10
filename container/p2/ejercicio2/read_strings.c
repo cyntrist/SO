@@ -74,7 +74,6 @@ int main(int argc, char *argv[])
 	// }
 
 
-	// me he quedado sin ideas	
 	char * line;
 	while ((line = loadstr(file)) != NULL)
 	{
