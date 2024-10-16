@@ -9,43 +9,48 @@
 
 int print_text_file(char *path)
 {
-	FILE *file = path;
+	FILE *file;
 	char line[MAXLEN_LINE_FILE + 1];
 	student_t *entries;
 	student_t *cur_entry;
-	int line_count = 0;
 	char *token;
 	char *lineptr;
 	token_id_t token_id;
 	int entry_idx;
-	int entry_count = 0;
 	int cur_line;
 
 	if ((file = fopen(path, "r")) == NULL)
 	{
-		fprintf(stderr, "%s could not be opened: ", file);
+		fprintf(stderr, "%s could not be opened: ", path);
 		perror(NULL);
-		return NULL;
+		return -1;
 	}
 
 	// first char is no of lines
 	int n_lines = fgetc(file);
 
-	/* Figure out number of lines */
-	while (fgets(line, MAXLEN_LINE_FILE + 1, path) != NULL)
+	if (fscanf(file, "%d\n", &n_lines) != 1)
 	{
-		line_count++;
-		/* Discard lines that begin with # */
-		if (line[0] != '#')
-			entry_count++;
+		fprintf(stderr, "Error al leer el número de registros\n");
+		fclose(file);
+		return -1;
 	}
+
+	// /* Figure out number of lines */
+	// while (fgets(line, MAXLEN_LINE_FILE + 1, path) != NULL)
+	// {
+	// 	line_count++;
+	// 	/* Discard lines that begin with # */
+	// 	if (line[0] != '#')
+	// 		entry_count++;
+	// }
 
 	/* Rewind position indicator*/
 	fseek(file, 0, SEEK_SET);
 
-	entries = malloc(sizeof(student_t) * entry_count);
+	entries = malloc(sizeof(student_t) * n_lines);
 	/* zero fill the array of structures */
-	memset(entries, 0, sizeof(student_t) * entry_count);
+	memset(entries, 0, sizeof(student_t) * n_lines);
 
 	/* Parse file */
 	entry_idx = 0;
@@ -54,11 +59,11 @@ int print_text_file(char *path)
 	{
 
 		/* Discard lines that begin with # */
-		if (line[0] == '#')
-		{
-			cur_line++;
-			continue;
-		}
+		// if (line[0] == '#')
+		// {
+		// 	cur_line++;
+		// 	continue;
+		// }
 
 		/* Point to the beginning of the line */
 		lineptr = line;
@@ -90,7 +95,7 @@ int print_text_file(char *path)
 		if (token_id != NR_FIELDS_STUDENT)
 		{
 			fprintf(stderr, "Could not process all tokens from line %d of /etc/passwd\n", entry_idx + 1);
-			return NULL;
+			return -1;
 		}
 		cur_line++;
 		entry_idx++;
@@ -98,13 +103,12 @@ int print_text_file(char *path)
 	//(*nr_entries) = entry_count;
 
 	// printing
-	int i = 0;
 	for (int i = 0; i < n_lines; i++)
 	{
 		student_t *e = &entries[i]; /* Point to current entry */
 		fprintf(stdout, "[Entry #%d]\n", i);
-		fprintf(stdout, "\tID=%s\n\tNIF=%s\n\t"
-						"First Name=%d\n\tgid=%d\n\tLast Name=%s\n\t",
+		fprintf(stdout, "\tID=%d\n\tNIF=%s\n\t"
+						"First Name=%s\n\tLast Name=%s\n\t",
 				e->student_id, e->NIF, e->first_name, e->last_name);
 	}
 
@@ -130,7 +134,7 @@ int main(int argc, char *argv[])
 
 	/* Initialize default values for options */
 	options.input_file = "students-db.txt";
-	options.output_file = stdout;
+	options.output_file = "stdout";
 	options.action = NONE_ACT;
 	ret_code = 0;
 
