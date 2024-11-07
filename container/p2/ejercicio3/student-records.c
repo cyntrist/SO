@@ -9,6 +9,7 @@
 
 int print_text_file(char *path)
 {
+
 	FILE *file;
 	char line[MAXLEN_LINE_FILE + 1];
 	student_t *entries;
@@ -28,6 +29,8 @@ int print_text_file(char *path)
 
 	// first char is no of lines
 	int n_lines = fgetc(file);
+	n_lines -= '0';
+	fprintf(stderr, "n_lines: %d\n", n_lines);
 
 	if (fscanf(file, "%d\n", &n_lines) != 1)
 	{
@@ -46,18 +49,17 @@ int print_text_file(char *path)
 	// }
 
 	/* Rewind position indicator*/
-	fseek(file, 0, SEEK_SET);
+	fseek(file, 2, SEEK_SET);
 
 	entries = malloc(sizeof(student_t) * n_lines);
 	/* zero fill the array of structures */
 	memset(entries, 0, sizeof(student_t) * n_lines);
-
 	/* Parse file */
 	entry_idx = 0;
 	cur_line = 1;
+
 	while (fgets(line, MAX_PASSWD_LINE + 1, file) != NULL)
 	{
-
 		/* Discard lines that begin with # */
 		// if (line[0] == '#')
 		// {
@@ -69,27 +71,35 @@ int print_text_file(char *path)
 		lineptr = line;
 		token_id = STUDENT_ID_IDX;
 		cur_entry = &entries[entry_idx];
+		fprintf(stderr, "lineprtr: %s\n", lineptr);
 
 		while ((token = strsep(&lineptr, ":")) != NULL)
 		{
+			fprintf(stderr, "lineprtr: %s\ntoken: %s\ntoken_id: %d\n", lineptr, token, token_id);
 			switch (token_id)
 			{
 			case STUDENT_ID_IDX:
-				strcpy(cur_entry->student_id, token);
+				cur_entry->student_id = 1;
+				fprintf(stderr, "-->id: %d\n", token);
 				break;
 			case NIF_IDX:
 				strcpy(cur_entry->NIF, token);
+				fprintf(stderr, "-->nif: %d\n", token);
 				break;
 			case FIRST_NAME_IDX:
 				strcpy(cur_entry->first_name, token);
+				fprintf(stderr, "-->firstname: %d\n", token);
 				break;
 			case LAST_NAME_IDX:
 				strcpy(cur_entry->last_name, token);
+				fprintf(stderr, "-->lastname: %d\n", token);
 				break;
 			default:
 				break;
 			}
+			fprintf(stderr, "%d - ", token_id);
 			token_id++;
+			fprintf(stderr, "%d\n", token_id);
 		}
 
 		if (token_id != NR_FIELDS_STUDENT)
@@ -144,7 +154,7 @@ int main(int argc, char *argv[])
 		switch (opt)
 		{
 		case 'h':
-			fprintf(stderr, "Usage: %s [ -h ]\n", argv[0]);
+			fprintf(stderr, "Usage: %s [ -h | -p | -i file ]\n", argv[0]);
 			exit(EXIT_SUCCESS);
 		case 'i':
 			options.input_file = optarg;
@@ -160,14 +170,15 @@ int main(int argc, char *argv[])
 
 	if (options.input_file == NULL)
 	{
-		fprintf(stderr, "Must specify one record file as an argument of -i\n");
+		printf("holaa");
+		fprintf(stderr, "aaaaaaMust specify one record file as an argument of -i\n");
 		exit(EXIT_FAILURE);
 	}
 
 	switch (options.action)
 	{
 	case NONE_ACT:
-		fprintf(stderr, "Must indicate one of the following options: -p, -o, -b \n");
+		fprintf(stderr, "bbbbbbbMust indicate one of the following options: -p, -o, -b \n");
 		ret_code = EXIT_FAILURE;
 		break;
 	case PRINT_TEXT_ACT:
