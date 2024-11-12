@@ -71,20 +71,24 @@ int print_text_file(char *path)
 		lineptr = line;
 		token_id = STUDENT_ID_IDX;
 		cur_entry = &entries[entry_idx];
-		fprintf(stderr, "lineprtr: %s\n", lineptr);
+		//fprintf(stderr, "lineprtr: %s\n", lineptr);
 
 		while ((token = strsep(&lineptr, ":")) != NULL)
 		{
-			fprintf(stderr, "lineprtr: %s\ntoken: %s\ntoken_id: %d\n", lineptr, token, token_id);
+			fprintf(stderr, "lineprtr: %stoken: %s\ntoken_id: %d\n", lineptr, token, token_id);
 			switch (token_id)
 			{
 			case STUDENT_ID_IDX:
-				cur_entry->student_id = 1;
-				fprintf(stderr, "-->id: %d\n", token);
+				cur_entry->student_id = atoi(token);
+				fprintf(stderr, "-->id: %d\n", cur_entry->student_id);
 				break;
 			case NIF_IDX:
-				strcpy(cur_entry->NIF, token);
-				fprintf(stderr, "-->nif: %d\n", token);
+				// strcpy(cur_entry->NIF, token);
+				*cur_entry->NIF = strdup(token);
+				//cur_entry->NIF = atoi(cur_entry->NIF);
+				//memcpy(cur_entry->NIF, token, MAX_CHARS_NIF+1);
+				// fprintf(stderr, "-->nif: %d\n", token);
+				fprintf(stderr, "-->nif: %d\n", cur_entry->NIF);
 				break;
 			case FIRST_NAME_IDX:
 				strcpy(cur_entry->first_name, token);
@@ -97,9 +101,8 @@ int print_text_file(char *path)
 			default:
 				break;
 			}
-			fprintf(stderr, "%d - ", token_id);
 			token_id++;
-			fprintf(stderr, "%d\n", token_id);
+			fprintf(stderr, "%d\n\n", token_id);
 		}
 
 		if (token_id != NR_FIELDS_STUDENT)
