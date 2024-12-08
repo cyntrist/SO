@@ -27,9 +27,15 @@ pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
 pthread_cond_t full = PTHREAD_COND_INITIALIZER;
 pthread_cond_t vip_queue = PTHREAD_COND_INITIALIZER;
 pthread_cond_t normal_queue = PTHREAD_COND_INITIALIZER;
+
 int num_clients_inside = 0;
 int num_vip_waiting = 0;
 int num_normal_waiting = 0;
+
+int ticket_normal = 0;
+int ticket_vip = 0;
+int orden_normal = 0;
+int orden_vip = 0;
 
 void enter_normal_client(int id)
 {
@@ -42,8 +48,27 @@ void enter_normal_client(int id)
 void enter_vip_client(int id)
 {
 	pthread_mutex_lock(&mutex);
+
+	num_vip_waiting++;
+	ticket_vip++;
+	int ticket = ticket_vip;
+
+	while (num_clients_inside == CAPACITY && num_vip_waiting > 0 && ticket != orden_vip)
+	{
+		printf("Client %d, who is %s, is waiting to enter.\n", id, VIPSTR(1));
+		pthread_cond_wait(&vip_queue, &mutex);
+	}
+
+	printf("Client %d, %s, has entered the disco.\n", id, VIPSTR(1));
+	orden_vip++;
 	num_clients_inside++;
 	num_vip_waiting--;
+
+	if (num_vip_waiting > 0)
+		pthread_cond_broadcast(&vip_queue);
+	else if (num_normal_waiting > 0)
+		pthread_cond_broadcast(&normal_queue);
+
 	pthread_mutex_unlock(&mutex);
 }
 
