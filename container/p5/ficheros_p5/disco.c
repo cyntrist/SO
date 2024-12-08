@@ -54,7 +54,7 @@ void print_queue_data()
 void broadcast()
 {
 	print_disco_data();
-	//print_queue_data();
+	// print_queue_data();
 	if (num_vip_waiting > 0)
 		pthread_cond_broadcast(&vip_queue); // primero vips
 	else if (num_normal_waiting > 0)
@@ -200,6 +200,8 @@ int main(int argc, char *argv[])
 		// printf("Thread %d joined successfully.\n", i);
 	}
 
+	pthread_cond_destroy(&vip_queue);
+	pthread_cond_destroy(&normal_queue);
 	pthread_mutex_destroy(&mutex);
 	fclose(option.input_file);
 	return 0;
