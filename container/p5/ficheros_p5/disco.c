@@ -54,6 +54,7 @@ void print_queue_data()
 void broadcast()
 {
 	print_disco_data();
+	//print_queue_data();
 	if (num_vip_waiting > 0)
 		pthread_cond_broadcast(&vip_queue); // primero vips
 	else if (num_normal_waiting > 0)
@@ -70,7 +71,7 @@ void enter_normal_client(int id)
 	int ticket = normal_ticket;
 
 	// espera de la variable condicional hasta que se pueda continuar
-	while (num_clients_inside == CAPACITY || num_vip_waiting > 0 || ticket != normal_order)
+	while (num_clients_inside >= CAPACITY || num_vip_waiting > 0 || ticket != normal_order)
 	{
 		printf("Client %d, who is %s, is waiting to enter.\n", id, VIPSTR(0));
 		pthread_cond_wait(&normal_queue, &mutex);
@@ -98,7 +99,7 @@ void enter_vip_client(int id)
 	int ticket = vip_ticket;
 
 	// espera de la variable condicional hasta que se pueda continuar
-	while (num_clients_inside == CAPACITY || ticket != vip_order)
+	while (num_clients_inside >= CAPACITY || ticket != vip_order)
 	{
 		printf("Client %d, who is %s, is waiting to enter.\n", id, VIPSTR(1));
 		pthread_cond_wait(&vip_queue, &mutex);
