@@ -73,7 +73,7 @@ int main(int argc, char *argv[])
 	int clients[m], i = 0;
 	while (fscanf(option.input_file, "%d", &clients[i]) == 1) 
 	{
-		printf("%d CLIENTE: %d\n", i, clients[i]);
+		printf("Client number %d is %s\n", i, VIPSTR(clients[i]));
 		i++;
 	}
 	// ---
