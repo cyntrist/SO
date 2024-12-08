@@ -24,7 +24,6 @@ struct client
 
 /// SHARED DATA
 pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER; // con esto ya no hace falta hacer pthread_mutex_init entiendo
-pthread_cond_t full = PTHREAD_COND_INITIALIZER;
 pthread_cond_t vip_queue = PTHREAD_COND_INITIALIZER;
 pthread_cond_t normal_queue = PTHREAD_COND_INITIALIZER;
 
@@ -34,8 +33,8 @@ int num_normal_waiting = 0;
 
 int normal_ticket = 0; // al mas puro estilo carnicería
 int vip_ticket = 0;
-int normal_order = 0;
-int vip_order = 0;
+int normal_order = 1;
+int vip_order = 1;
 
 void print_disco_data()
 {
@@ -71,7 +70,7 @@ void enter_normal_client(int id)
 	int ticket = normal_ticket;
 
 	// espera de la variable condicional hasta que se pueda continuar
-	while (num_clients_inside >= CAPACITY && num_normal_waiting > 0 && ticket != normal_order)
+	while (num_clients_inside == CAPACITY || num_vip_waiting > 0 || ticket != normal_order)
 	{
 		printf("Client %d, who is %s, is waiting to enter.\n", id, VIPSTR(0));
 		pthread_cond_wait(&normal_queue, &mutex);
@@ -84,7 +83,7 @@ void enter_normal_client(int id)
 	num_clients_inside++;
 	num_normal_waiting--;
 
-	broadcast(); // llamar al resto de la cola
+	broadcast(); // llamada al resto de colas
 
 	pthread_mutex_unlock(&mutex); // desbloqueo
 }
@@ -99,7 +98,7 @@ void enter_vip_client(int id)
 	int ticket = vip_ticket;
 
 	// espera de la variable condicional hasta que se pueda continuar
-	while (num_clients_inside >= CAPACITY && num_vip_waiting > 0 && ticket != vip_order)
+	while (num_clients_inside == CAPACITY || ticket != vip_order)
 	{
 		printf("Client %d, who is %s, is waiting to enter.\n", id, VIPSTR(1));
 		pthread_cond_wait(&vip_queue, &mutex);
