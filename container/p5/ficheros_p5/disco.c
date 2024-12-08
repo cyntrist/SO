@@ -2,7 +2,6 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
-#include <time.h>
 
 #define CAPACITY 3
 #define VIPSTR(vip) ((vip) ? "  vip  " : "not vip")
@@ -176,7 +175,7 @@ int main(int argc, char *argv[])
 	}
 
 	// parseo
-	int buff, M;
+	int M;
 	fscanf(option.input_file, "%d", &M);
 	struct client clients[M];
 	for (int i = 0; i < M; i++)
@@ -186,6 +185,7 @@ int main(int argc, char *argv[])
 		printf("Client number %d is %s\n", i, VIPSTR(clients[i].vip));
 	};
 
+	// hilos
 	for (int i = 0; i < M; i++)
 		if (pthread_create(&clients[i].thread, NULL, client, (void *)&clients[i]) == 0)
 			;
@@ -196,6 +196,7 @@ int main(int argc, char *argv[])
 			;
 		// printf("Thread %d joined successfully.\n", i);
 
+	// fin
 	pthread_cond_destroy(&vip_queue);
 	pthread_cond_destroy(&normal_queue);
 	pthread_mutex_destroy(&mutex);
