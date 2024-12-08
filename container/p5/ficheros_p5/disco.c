@@ -187,18 +187,14 @@ int main(int argc, char *argv[])
 	};
 
 	for (int i = 0; i < M; i++)
-	{
 		if (pthread_create(&clients[i].thread, NULL, client, (void *)&clients[i]) == 0)
 			;
 		// printf("Thread %d created successfully.\n", i);
-	}
 
 	for (int i = 0; i < M; i++)
-	{
 		if (pthread_join(clients[i].thread, NULL) == 0)
 			;
 		// printf("Thread %d joined successfully.\n", i);
-	}
 
 	pthread_cond_destroy(&vip_queue);
 	pthread_cond_destroy(&normal_queue);
