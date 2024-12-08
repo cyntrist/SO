@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <pthread.h>
 
 #define CAPACITY 5
 #define VIPSTR(vip) ((vip) ? "  vip  " : "not vip")
@@ -9,6 +10,10 @@ struct options
 {
 	FILE *input_file;
 };
+
+pthread_mutex_t m = PTHREAD_MUTEX_INITIALIZER;
+pthread_cond_t empty = PTHREAD_COND_INITIALIZER;
+pthread_cond_t full = PTHREAD_COND_INITIALIZER;
 
 void enter_normal_client(int id)
 {
@@ -77,6 +82,9 @@ int main(int argc, char *argv[])
 		i++;
 	}
 	// ---
+
+
+
 
 	return 0;
 }
