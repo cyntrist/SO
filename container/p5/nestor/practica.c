@@ -15,11 +15,11 @@ int num_clients = 0;
 int vips_waiting = 0;
 int normals_waiting = 0;
 
-int orden_normal = 0;
-int ticket_normal = 0;
+int normal_order = 0;
+int normal_ticket = 0;
 
-int orden_vip = 0;
-int ticket_vip = 0;
+int vip_order = 0;
+int vip_ticket = 0;
 
 struct hilos_param {
     int id;
@@ -30,10 +30,10 @@ void enter_normal_client(int id) {
 	pthread_mutex_lock(&mutex); //se bloquea
 	
 	normals_waiting++;
-	int myticket = ticket_normal;
-	ticket_normal++;
+	int myticket = normal_ticket;
+	normal_ticket++;
 	
-	while (num_clients == CAPACITY || orden_normal < myticket || vips_waiting > 0){
+	while (num_clients == CAPACITY || normal_order < myticket || vips_waiting > 0){
 		printf("Client %2d (%s) is waiting\n", id, VIPSTR(0));
 		pthread_cond_wait(&normal_queue, &mutex);
 	}
@@ -41,7 +41,7 @@ void enter_normal_client(int id) {
 	printf("Client %2d (%s) is coming in\n", id, VIPSTR(0));
 	num_clients++;
 	normals_waiting--;
-	orden_normal++;
+	normal_order++;
 	
 	pthread_cond_broadcast(&normal_queue);
 	
@@ -52,10 +52,10 @@ void enter_vip_client(int id) {
 	pthread_mutex_lock(&mutex); //se bloquea
 	
 	vips_waiting++;
-	int myticket = ticket_vip;
-	ticket_vip++;
+	int myticket = vip_ticket;
+	vip_ticket++;
 	
-	while (num_clients == CAPACITY || orden_vip < myticket){
+	while (num_clients == CAPACITY || vip_order < myticket){
 		printf("Client %2d (%s) is waiting\n", id, VIPSTR(1));
 		pthread_cond_wait(&vip_queue, &mutex);
 	}
@@ -63,7 +63,7 @@ void enter_vip_client(int id) {
 	printf("Client %2d (%s) is coming in\n", id, VIPSTR(1));
 	num_clients++;
 	vips_waiting--;
-	orden_vip++;
+	vip_order++;
 	
 	if (vips_waiting > 0)
 		pthread_cond_broadcast(&vip_queue);
