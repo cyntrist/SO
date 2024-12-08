@@ -5,6 +5,11 @@
 #define CAPACITY 5
 #define VIPSTR(vip) ((vip) ? "  vip  " : "not vip")
 
+struct options
+{
+	FILE *input_file;
+};
+
 void enter_normal_client(int id)
 {
 }
@@ -25,19 +30,53 @@ void disco_exit(int id, int isvip)
 
 void *client(void *arg)
 {
-	...
+	// ...
 
-		if (isvip)
-			enter_vip_client(...);
-	else enter_normal_client(...);
-	dance(...);
-	exit_client(...);
+	// 	if (isvip)
+	// 		enter_vip_client(...);
+	// else enter_normal_client(...);
+	// dance(...);
+	// exit_client(...);
 
-	...
+	// ...
 }
 
 int main(int argc, char *argv[])
 {
+	int opt;
+	struct options option;
+	option.input_file = fopen("ejemplo.txt", "r");
+
+	while ((opt = getopt(argc, argv, "hi:")) != -1)
+	{
+		switch (opt)
+		{
+		case 'h':
+			fprintf(stderr, "Usage: %s [ -h | -i file ]\n", argv[0]);
+			exit(EXIT_SUCCESS);
+		case 'i':
+			option.input_file = fopen(optarg, "r");
+			if (!option.input_file)
+			{
+				fprintf(stderr, "File does not exist.\n");
+				exit(EXIT_FAILURE);
+			}
+			break;
+		default:
+			exit(EXIT_FAILURE);
+		}
+	}
+
+	// parseo
+	int buff, m;
+	fscanf(option.input_file, "%d", &m);
+	int clients[m], i = 0;
+	while (fscanf(option.input_file, "%d", &clients[i]) == 1) 
+	{
+		printf("%d CLIENTE: %d\n", i, clients[i]);
+		i++;
+	}
+	// ---
 
 	return 0;
 }
