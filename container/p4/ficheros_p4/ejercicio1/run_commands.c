@@ -8,7 +8,7 @@ typedef enum
     NONE_ACT,
     X_ACT,
     S_ACT,
-    B_ACT
+    BS_ACT
 } action_t;
 
 typedef struct
@@ -26,8 +26,89 @@ struct options
 
 pid_t launch_command(char **argv)
 {
+    pid_t pid = fork();
 
-    return 0;
+    if (pid == 0)
+    {
+        printf("@@ Running command #%d: %s %s\n", argv[0], argv[1]);
+        if (execvp(argv[0], argv) == -1)
+        {
+            perror("execv");
+            exit(EXIT_FAILURE);
+        }
+        exit(1);
+    }
+
+    return pid;
+}
+
+void exec_file(char *path, int *b)
+{
+    FILE *f ;
+    fopen(f, "r");
+    if (!f)
+    {
+        printf(stderr, "Error while opening input file.\n");
+        return;
+    }
+
+    char command[256];
+    char **cmd_argv;
+    pid_t pidcmd;
+    int cmd_argc, i = 0;
+    process processes[256];
+
+    if (b)
+    {
+        while (fgets(command, 256, f) != NULL)
+        {
+            cmd_argv = parse_command(command, &cmd_argc);
+            pidcmd = launch_command(cmd_argv);
+            processes[i].pid = pidcmd;
+            processes[i].command_number = i;
+            i++;
+        }
+        fclose(f);
+
+        int proc = i, status;
+        while (i > 0)
+        {
+            pidcmd = wait(&status);
+            if (pidcmd > 0)
+            {
+                for (int j = 0; j < proc; j++)
+                {
+                    if (processes[j].pid == pidcmd)
+                    {
+                        printf("@@ Command #%d terminated (pid: %d, status: %d)\n", processes[j].command_number, pidcmd, WEXITSTATUS(status));
+                        break;
+                    }
+                }
+                i--;
+            }
+        }
+
+        for (int j = 0; cmd_argv[j] != NULL; j++)
+            free(cmd_argv[j]);
+        free(cmd_argv);
+        return;
+    }
+    else
+    {
+        while (fgets(command, 256, f) != NULL)
+        {
+            cmd_argv = parse_command(command, &cmd_argc);
+            pidcmd = launch_command(cmd_argv);
+            waitpid(pidcmd, NULL, 0);
+            printf("PID Hijo: %d\n", pidcmd);
+            i++;
+        }
+        fclose(f);
+        for (int i = 0; cmd_argv[i] != NULL; i++)
+            free(cmd_argv[i]); // Free individual argument
+        free(cmd_argv);
+    }
+    return;
 }
 
 char **parse_command(const char *cmd, int *argc)
@@ -97,8 +178,9 @@ char **parse_command(const char *cmd, int *argc)
 int main(int argc, char *argv[])
 {
     char **cmd_argv;
-    int cmd_argc, i, opt;
+    int cmd_argc, i, opt, pid;
     struct options option;
+    option.action = NONE_ACT;
 
     if (argc != 2)
     {
@@ -112,26 +194,51 @@ int main(int argc, char *argv[])
         switch (opt)
         {
         case 'h':
-            fprintf(stderr, "Usage: %s [ -x command | -s file | -s file -b ]\n", argv[0]);
+            fprintf(stderr, "Usage: %s [ -x command | -s file | -b -s file ]\n", argv[0]);
             exit(EXIT_SUCCESS);
         case 'x':
             option.action = X_ACT;
             option.cmds = optarg;
             break;
         case 's':
-            option.action = S_ACT;
+            if (option.action == NONE_ACT)
+                option.action = S_ACT;
             option.input_file = optarg;
             break;
         case 'b':
-            option.action = B_ACT;
-            option.cmds[0] = argv[2];
+            option.action = BS_ACT;
+            option.input_file = optarg;
             break;
         default:
             exit(EXIT_FAILURE);
         }
     }
 
-    cmd_argv = parse_command(argv[1], &cmd_argc);
+    switch (option.action)
+    {
+    case X_ACT:
+        cmd_argv = parse_command(argv[1], &cmd_argc);
+        pid = launch_command(cmd_argv);
+
+        printf("PID: %d\n", getpid());
+        printf("PID hijo: %d\n", pid);
+
+        for (i = 0; cmd_argv[i] != NULL; i++)
+            free(cmd_argv[i]); // Free individual argument
+        free(cmd_argv);
+        break;
+    case S_ACT:
+        exec_file(option.input_file, 0);
+        break;
+    case BS_ACT:
+        exec_file(option.input_file, 1);
+        break;
+    case NONE_ACT:
+        fprintf(stderr, "Usage: %s [ -x command | -s file | -b -s file ]\n");
+        break;
+    default:
+        break;
+    }
 
     // Print parsed arguments
     printf("argc: %d\n", cmd_argc);

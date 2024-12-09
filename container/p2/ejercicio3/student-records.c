@@ -76,16 +76,7 @@ int print_text_file(char *path)
 	}
 
 	for (int i = 0; i < num_records; ++i)
-	{
 		print_student(&i, &students[i]);
-		// printf("[Entry #%d]\n", i);
-		// printf("    student_id = %d\n", students[i].student_id);
-		// printf("    NIF = %s\n", students[i].NIF);
-		// printf("    first_name = %s\n", students[i].first_name);
-		// printf("    last_name = %s\n", students[i].last_name);
-		// free(students[i].first_name);
-		// free(students[i].last_name);
-	}
 
 	free(students);
 	fclose(file);
