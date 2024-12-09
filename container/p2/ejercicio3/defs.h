@@ -30,7 +30,8 @@ typedef enum {
 	NONE_ACT,
 	PRINT_TEXT_ACT,
 	PRINT_BINARY_ACT,
-	WRITE_BINARY_ACT
+	WRITE_BINARY_ACT,
+	ADD_RECORD_ACT
 } action_t;
 
 /**
