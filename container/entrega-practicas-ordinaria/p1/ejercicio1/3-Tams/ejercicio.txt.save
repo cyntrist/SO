@@ -1,0 +1,41 @@
+Compila y ejecuta el código de cada uno de los ejemplos proporcionados y responde a las preguntas proporcionadas para ellos.
+
+    main1.c
+        ¿Por qué el primer printf() imprime valores distintos para ‘a’ con los modificadores %d y %c?
+	>> Porque con %d está interpretando el número como un int y con %c como el código de un caracter ASCII
+
+        ¿Cuánto ocupa un tipo de datos char?
+	>> 1 byte
+
+        ¿Por qué el valor de ‘a’ cambia tanto al incrementarlo en 6? (la respuesta está relacionada con la cuestión anterior)
+       >> Porque se sale del rango de enteros de 4 bytes (-128 a 127) e interpreta el primer bit como el signo, por tanto -128
+	>> (122) 01111010 --> 1000000 (-128)   
+
+	 Si un “long” y un “double” ocupan lo mismo, ¿por qué hay 2 tipos de datos diferentes?
+	>> Long es para enteros, double es para precision doble de punto flotante
+
+    main2.c
+        ¿Tenemos un problema de compilación o de ejecución?
+       >> Sí:
+	main2.c:13:5: error: variably modified ‘array2’ at file scope
+	   13 | int array2[a];
+	      |     ^~~~~~
+
+
+	 ¿Por qué se da el problema?. Soluciónalo, compila y ejecuta de nuevo.
+	>> El problema viene generado de declarar un array en función de una variable, tiene que ser declarado en función de algo constante en tiempo de compilación, como el macro ARRAY_SIZE.
+	>> Al recompilar el problema no persiste.
+
+        ¿Qué significa el modificar "%lu" en printf()?
+	>> Long unsinged int.
+
+        ¿A qué dirección apunta "pc"? ¿Coincide con la de alguna variable anteriormente declarada? Si es así, ¿Coinciden los tamaños de ambas?
+	>> 
+
+        ¿Coincide el valor del tamaño de array1 con el número de elementos del array? ¿Por qué?
+
+
+        ¿Coinciden las direcciones a la que apunta str1 con la de str2?
+
+
+        ¿Por qué los tamaños (según sizeof()) de str1 y str2 son diferentes?

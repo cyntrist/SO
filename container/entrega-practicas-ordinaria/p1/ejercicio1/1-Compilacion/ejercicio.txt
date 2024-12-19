@@ -1,0 +1,7 @@
+¿Qué ha ocurrido con la “llamada a min()” en hello2.i?
+
+Como era un macro, se ha sustituido por su definicion en el archivo intermedio de preprocesado.
+
+¿Qué efecto ha tenido la directiva #include <stdio.h>?
+
+Ha incluido la librería entera en el archivo intermedio para ser compilado.

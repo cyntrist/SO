@@ -1,0 +1,3 @@
+El programa primes cuyo código fuente se muestra a continuación, ha sido desarrollado para calcular la suma de los n primeros números primos. Lamentablemente, el programador ha cometido algunos errores. Utilizando el depurador de C gdb el alumno debe encontrar y corregir los errores. Compilar directamente en línea de comandos: 
+
+gcc -g -w -o primes primes.c

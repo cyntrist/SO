@@ -1,0 +1,22 @@
+Responda a las siguientes preguntas:
+
+    1. Para representar cada una de las entradas del fichero /etc/passwd se emplea el tipo de datos passwd_entry_t (estructura definida en defs.h). Nótese que muchos de los campos almacenan cadenas de caracteres definidas como arrays de caracteres de longitud máxima prefijada, o mediante el tipo de datos char*. La función parse_passwd(), definida en show-passwd.c es la encargada de inicializar los distintos campos de la estructura. ¿Cuál es el propósito de la función clone_string() que se usa para inicializar algunos de los citados campos tipo cadena? ¿Por qué no es posible en algunos casos simplemente copiar la cadena vía strcpy() o realizando una asignación campo=cadena_existente;? Justifique la respuesta.
+
+Se usa para hacer una copia dinámica alocandola en el heap de los strings, independientemente de si son punteros o arrays y del tamaño de estos, teniendo cuenta el decay. Esto es porque tiene en cuenta el tipo de los campos de passwd_entry_t. No se usa strcopy o = porque algunos campos son punteros y otros arrays en stack por lo que el tipo de datos y su tamaño limita estas operaciones y no servirían.
+
+
+    2. La función strsep(), utilizada en parse_passwd(), modifica la cadena que se desea dividir en tokens. ¿Qué tipo de modificaciones sufre la cadena (variable line) tras invocaciones sucesivas de strsep()? Pista: Consúltese el valor y las direcciones de las variables del programa usando el depurador.
+
+line va saltando línea a línea por cada iteración de fgets(line, MAX_PASSWD_LINE + 1, passwd) != NULL, por lo que line[0] cada vez será el primer caracter de la siguiente línea a leer.
+
+
+Realice las siguientes modificaciones en el programa show-passwd.c:
+
+    3. Consulte la página de manual de la función strdup de la biblioteca estándar de C. Intenta utilizar esta función como reemplazo de clone_string().
+    
+    >> hay que hacer frees adicionales? creo que no 
+
+    4. Añada la opción -i <inputfile> para especificar una ruta alternativa para el fichero passwd. Hacer una copia de /etc/passwd en otra ubicación para verificar el correcto funcionamiento de esta nueva opción.
+
+    5. Implemente una nueva opción -c en el programa, que permita mostrar los campos en cada entrada de passwd como valores separados por comas (CSV) en lugar de por ":".
+
